@@ -10,7 +10,7 @@
 }
 
 body {
-  @apply bg-slate-50 font-body text-slate-900 antialiased;
+  @apply bg-slate-100 font-body text-slate-900 antialiased;
 }
 
 a {
@@ -28,5 +28,26 @@ a {
   }
   p {
     @apply font-body;
+  }
+}
+
+@layer components {
+  .card-surface {
+    @apply rounded-[32px] border border-slate-200/70 bg-white/90 shadow-panel backdrop-blur;
+  }
+  .glass-surface {
+    @apply rounded-3xl border border-white/20 bg-white/10 backdrop-blur;
+  }
+  .hover-lift {
+    @apply transition-transform duration-300 ease-out hover:-translate-y-1 hover:shadow-elevate;
+  }
+  .fade-in {
+    @apply animate-fadeIn;
+  }
+  .slide-up {
+    @apply animate-slideUp;
+  }
+  .scale-in {
+    @apply animate-scaleIn;
   }
 }
