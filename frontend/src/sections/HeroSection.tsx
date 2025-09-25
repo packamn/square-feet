@@ -1,93 +1,117 @@
-import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+
+const supportCards = [
+  {
+    title: 'Personalized tours',
+    description: 'Virtual and in-person walkthroughs guided by local experts tailored to your schedule.',
+  },
+  {
+    title: 'Investment insights',
+    description: 'Live market data, valuation forecasts, and rental projections built into every listing.',
+  },
+  {
+    title: 'Concierge closing',
+    description: 'Dedicated advisors orchestrate financing, inspections, and closing logistics end-to-end.',
+  },
+]
 
 const HeroSection = () => {
   return (
-    <section className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center">
-      <div className="space-y-6">
+    <section className="grid gap-12 md:grid-cols-[1.05fr_0.95fr] md:items-center">
+      <div className="space-y-8">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-sm font-semibold text-brand-700"
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-brand-600"
         >
-          Luxury homes, smart investments
+          Elevated buying & selling journeys
         </motion.div>
 
         <motion.h1
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl"
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-[3.5rem]"
         >
-          Discover your next dream property with SquareFeet
+          Discover the properties that move your life forward
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-          className="text-lg text-slate-600"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-lg text-slate-600 md:max-w-xl"
         >
-          Explore curated listings across premier locations, access real-time
-          market insights, and manage your investment portfolio with ease.
+          SquareFeet blends curated inventory, real-time analytics, and concierge-grade service so every buyer, seller, and
+          investor feels confident from discovery to closing day.
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           className="flex flex-col gap-3 sm:flex-row"
         >
           <Link
             to="/properties"
-            className="inline-flex items-center justify-center rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:shadow-xl hover:shadow-brand-500/35"
+            className="inline-flex items-center justify-center rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600 hover:shadow-xl"
           >
-            Browse Properties
+            Browse listings
           </Link>
           <Link
             to="/sell"
             className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-brand-500 hover:text-brand-600"
           >
-            List Your Property
+            Request valuation
           </Link>
         </motion.div>
+
+        <motion.ul
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="grid gap-4 sm:grid-cols-3"
+        >
+          {supportCards.map((card) => (
+            <li key={card.title} className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-[0.2em] text-brand-500">{card.title}</p>
+              <p className="mt-2 text-sm text-slate-500">{card.description}</p>
+            </li>
+          ))}
+        </motion.ul>
       </div>
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, delay: 0.2 }}
-        className="relative h-[360px] overflow-hidden rounded-3xl bg-slate-900 shadow-card md:h-[420px]"
+        className="relative h-[420px] overflow-hidden rounded-[32px] bg-slate-900 shadow-[0_40px_80px_-40px_rgba(15,23,42,0.4)]"
       >
         <img
-          src="https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1200&q=80"
+          src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1400&q=80"
           alt="Luxury property"
-          className="absolute inset-0 h-full w-full object-cover opacity-80"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-slate-900/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/45 to-slate-900/10" />
 
-        <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-3 text-white">
+        <div className="absolute inset-x-6 bottom-6 flex flex-col gap-3 rounded-3xl bg-white/10 p-6 text-white backdrop-blur">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm uppercase tracking-wide text-white/70">
-                Featured Listing
-              </p>
-              <h3 className="font-display text-2xl font-semibold">
-                Skyline Residences
-              </h3>
+              <p className="text-xs uppercase tracking-wide text-white/70">Featured listing</p>
+              <h3 className="font-display text-2xl font-semibold">Pinnacle Collection</h3>
             </div>
-            <span className="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">
-              New
-            </span>
+            <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">Virtual tour ready</span>
           </div>
-          <p className="text-sm text-white/80">
-            4 Bed · 3 Bath · 4,120 sq.ft · San Francisco, CA · $3,650,000
-          </p>
+          <div className="grid gap-3 text-sm text-white/80 sm:grid-cols-2">
+            <p>5 Bed · 4.5 Bath · 5,200 sq.ft · Austin, TX</p>
+            <p>$2,980,000 · Smart automation · Private rooftop lounge</p>
+          </div>
         </div>
       </motion.div>
     </section>
-  );
-};
+  )
+}
 
-export default HeroSection;
+export default HeroSection

@@ -12,7 +12,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   })
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card transition hover:-translate-y-1 hover:shadow-xl">
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl">
       <div className="h-48 w-full overflow-hidden">
         <img
           src={
@@ -20,12 +20,19 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=800&q=80'
           }
           alt={property.title}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="flex items-start justify-between gap-4">
-          <h3 className="font-display text-xl font-semibold text-slate-900">{property.title}</h3>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-slate-900 group-hover:text-brand-600">
+              {property.title}
+            </h3>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              {property.propertyType}
+            </p>
+          </div>
           <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold uppercase text-brand-600">
             {property.status}
           </span>
