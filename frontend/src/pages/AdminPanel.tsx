@@ -9,12 +9,18 @@ import { AdminFilters } from '../sections/admin/AdminFilters'
 import { AdminPropertiesTable } from '../sections/admin/AdminPropertiesTable'
 import { AdminBulkActions } from '../sections/admin/AdminBulkActions'
 import { AdminDetailDrawer } from '../sections/admin/AdminDetailDrawer'
+import { usePageMetadata } from '../hooks/usePageMetadata'
+import { TableRowSkeleton } from '../components/Skeletons'
 
 const defaultFilters: PropertyFilters = {
   status: 'pending,approved,draft,rejected',
 }
 
 const AdminPanel = () => {
+  usePageMetadata({
+    title: 'Admin Control Center · SquareFeet',
+    description: 'Review, approve, and update listings across the SquareFeet network with the admin control center.',
+  })
   const [filters, setFilters] = useState<PropertyFilters>(defaultFilters)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [detailProperty, setDetailProperty] = useState<Property | null>(null)
@@ -70,6 +76,13 @@ const AdminPanel = () => {
       )}
 
       <AnimatePresence>
+        {status === 'loading' && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="rounded-3xl border border-slate-200 bg-white shadow-sm">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TableRowSkeleton key={index} />
+            ))}
+          </motion.div>
+        )}
         {status === 'success' && data.length > 0 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <AdminPropertiesTable

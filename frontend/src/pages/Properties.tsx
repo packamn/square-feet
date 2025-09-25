@@ -5,6 +5,8 @@ import { useProperties } from '../hooks/useProperties'
 import type { PropertyFilters } from '../hooks/useProperties'
 import { SellerPropertyModal } from '../sections/dashboard/SellerPropertyModal'
 import type { Property } from '../types/property'
+import { usePageMetadata } from '../hooks/usePageMetadata'
+import { PropertyCardSkeleton } from '../components/Skeletons'
 
 const defaultFilters: PropertyFilters = {
   status: 'approved',
@@ -16,6 +18,11 @@ const filterOptions = {
 }
 
 const Properties = () => {
+  usePageMetadata({
+    title: 'Properties · SquareFeet',
+    description: 'Explore curated real estate listings from the SquareFeet network, complete with data-rich previews.',
+  })
+
   const [filters, setFilters] = useState<PropertyFilters>(defaultFilters)
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
@@ -126,7 +133,13 @@ const Properties = () => {
         </div>
       </div>
 
-      {status === 'loading' && <p className="text-sm text-slate-500">Loading properties...</p>}
+      {status === 'loading' && (
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <PropertyCardSkeleton key={index} />
+          ))}
+        </div>
+      )}
       {status === 'error' && (
         <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-600">Failed to load properties: {error}</p>
       )}
