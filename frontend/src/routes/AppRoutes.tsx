@@ -8,6 +8,7 @@ import Login from '../pages/Login'
 import NotFound from '../pages/NotFound'
 import Properties from '../pages/Properties'
 import Sell from '../pages/Sell'
+import AdminPanel from '../pages/AdminPanel'
 
 type AppRoutesProps = {
   LandingOverride?: ComponentType
@@ -23,6 +24,7 @@ const AppRoutes = ({ LandingOverride }: AppRoutesProps) => {
         <Route path="properties" element={<Properties />} />
         <Route path="sell" element={<Sell />} />
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="admin" element={<AdminPanel />} />
         <Route path="*" element={<NotFound />} />
       </Route>
       <Route path="login" element={<Login />} />
