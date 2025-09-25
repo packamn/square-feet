@@ -1,4 +1,4 @@
-import type { Property } from '../../backend/src/models/property'
+import type { Property } from '../types/property'
 
 interface PropertyCardProps {
   property: Property
