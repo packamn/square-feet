@@ -1,7 +1,7 @@
-import FeaturedProperties from '../sections/FeaturedProperties'
-import HeroSection from '../sections/HeroSection'
-import WhyChooseUs from '../sections/WhyChooseUs'
-import SearchBar from '../components/SearchBar'
+import FeaturedProperties from "../sections/FeaturedProperties";
+import HeroSection from "../sections/HeroSection";
+import WhyChooseUs from "../sections/WhyChooseUs";
+import SearchBar from "../components/SearchBar";
 
 const Home = () => {
   return (
@@ -11,7 +11,7 @@ const Home = () => {
       <FeaturedProperties />
       <WhyChooseUs />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
