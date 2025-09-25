@@ -6,7 +6,11 @@
     "dev": "nodemon --watch backend/src --ext ts --exec \"ts-node --project backend/tsconfig.json backend/src/server.ts\"",
     "build": "tsc -p backend/tsconfig.json",
     "start": "node dist/server.js",
-    "lint": "echo \"No backend linter configured yet\""
+    "lint": "echo \"No backend linter configured yet\"",
+    "dynamo:up": "docker-compose up -d dynamodb-local",
+    "dynamo:down": "docker-compose down",
+    "dynamo:create": "ts-node backend/src/scripts/createTable.ts",
+    "dynamo:seed": "ts-node backend/src/scripts/seedDynamo.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,14 +21,19 @@
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.5.2",
+    "@types/uuid": "^10.0.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.896.0",
+    "@aws-sdk/lib-dynamodb": "^3.896.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.11"
   }
 }

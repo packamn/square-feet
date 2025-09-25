@@ -3,52 +3,95 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const node_crypto_1 = require("node:crypto");
 const errorHandler_1 = require("../middleware/errorHandler");
+const propertyRepository_1 = require("../repositories/propertyRepository");
 const logger_1 = require("../utils/logger");
+const validation_1 = require("../utils/validation");
 const router = (0, express_1.Router)();
-const properties = new Map();
-router.get('/', (_req, res) => {
-    res.json({ items: Array.from(properties.values()), count: properties.size });
-});
-router.get('/:id', (req, res, next) => {
-    const property = properties.get(req.params.id);
-    if (!property) {
-        return next(new errorHandler_1.ApiError(404, 'Property not found'));
+router.get('/', async (req, res, next) => {
+    try {
+        const { status, propertyType, city, minPrice, maxPrice, search } = req.query;
+        const filters = {
+            status: typeof status === 'string' ? status : undefined,
+            propertyType: typeof propertyType === 'string' ? propertyType : undefined,
+            city: typeof city === 'string' ? city : undefined,
+            minPrice: typeof minPrice === 'string' ? Number(minPrice) : undefined,
+            maxPrice: typeof maxPrice === 'string' ? Number(maxPrice) : undefined,
+            search: typeof search === 'string' ? search : undefined,
+        };
+        const properties = await (0, propertyRepository_1.listProperties)(filters);
+        res.json({ items: properties, count: properties.length });
     }
-    res.json(property);
-});
-router.post('/', (req, res) => {
-    var _a;
-    const now = new Date().toISOString();
-    const property = {
-        ...req.body,
-        propertyId: (_a = req.body.propertyId) !== null && _a !== void 0 ? _a : (0, node_crypto_1.randomUUID)(),
-        createdAt: now,
-        updatedAt: now,
-    };
-    properties.set(property.propertyId, property);
-    logger_1.logger.info('Created property', property.propertyId);
-    res.status(201).json(property);
-});
-router.put('/:id', (req, res, next) => {
-    const existing = properties.get(req.params.id);
-    if (!existing) {
-        return next(new errorHandler_1.ApiError(404, 'Property not found'));
+    catch (error) {
+        next(error);
     }
-    const updated = {
-        ...existing,
-        ...req.body,
-        updatedAt: new Date().toISOString(),
-    };
-    properties.set(req.params.id, updated);
-    logger_1.logger.info('Updated property', req.params.id);
-    res.json(updated);
 });
-router.delete('/:id', (req, res, next) => {
-    if (!properties.has(req.params.id)) {
-        return next(new errorHandler_1.ApiError(404, 'Property not found'));
+router.get('/:id', async (req, res, next) => {
+    try {
+        const property = await (0, propertyRepository_1.getPropertyById)(req.params.id);
+        if (!property) {
+            return next(new errorHandler_1.ApiError(404, 'Property not found'));
+        }
+        return res.json(property);
     }
-    properties.delete(req.params.id);
-    logger_1.logger.warn('Deleted property', req.params.id);
-    res.status(204).send();
+    catch (error) {
+        return next(error);
+    }
+});
+router.post('/', async (req, res, next) => {
+    var _a, _b, _c, _d, _e;
+    try {
+        const parseResult = validation_1.propertySchema.safeParse(req.body);
+        if (!parseResult.success) {
+            return next(new errorHandler_1.ApiError(400, parseResult.error.message));
+        }
+        const now = new Date().toISOString();
+        const body = parseResult.data;
+        const property = {
+            ...body,
+            propertyId: (_a = body.propertyId) !== null && _a !== void 0 ? _a : (0, node_crypto_1.randomUUID)(),
+            createdAt: now,
+            updatedAt: now,
+            status: (_b = body.status) !== null && _b !== void 0 ? _b : 'draft',
+            sellerId: (_c = body.sellerId) !== null && _c !== void 0 ? _c : (0, node_crypto_1.randomUUID)(),
+            features: (_d = body.features) !== null && _d !== void 0 ? _d : [],
+            images: (_e = body.images) !== null && _e !== void 0 ? _e : [],
+        };
+        await (0, propertyRepository_1.createProperty)(property);
+        logger_1.logger.info('Created property', property.propertyId);
+        res.status(201).json(property);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+router.put('/:id', async (req, res, next) => {
+    try {
+        const parseResult = validation_1.propertySchema.partial().safeParse(req.body);
+        if (!parseResult.success) {
+            return next(new errorHandler_1.ApiError(400, parseResult.error.message));
+        }
+        const updated = await (0, propertyRepository_1.updateProperty)(req.params.id, parseResult.data);
+        if (!updated) {
+            return next(new errorHandler_1.ApiError(404, 'Property not found'));
+        }
+        logger_1.logger.info('Updated property', req.params.id);
+        return res.json(updated);
+    }
+    catch (error) {
+        return next(error);
+    }
+});
+router.delete('/:id', async (req, res, next) => {
+    try {
+        const removed = await (0, propertyRepository_1.deleteProperty)(req.params.id);
+        if (!removed) {
+            return next(new errorHandler_1.ApiError(404, 'Property not found'));
+        }
+        logger_1.logger.warn('Deleted property', req.params.id);
+        return res.status(204).send();
+    }
+    catch (error) {
+        return next(error);
+    }
 });
 exports.default = router;

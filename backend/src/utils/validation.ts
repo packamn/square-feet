@@ -1,0 +1,26 @@
+import { z } from 'zod'
+
+export const propertySchema = z.object({
+  propertyId: z.string().optional(),
+  title: z.string().min(3),
+  description: z.string().min(10),
+  price: z.number().positive(),
+  currency: z.string().length(3),
+  address: z.object({
+    street: z.string(),
+    city: z.string(),
+    state: z.string(),
+    zipCode: z.string(),
+    country: z.string(),
+  }),
+  propertyType: z.enum(['house', 'apartment', 'condo', 'land', 'commercial']),
+  bedrooms: z.number().optional(),
+  bathrooms: z.number().optional(),
+  squareFootage: z.number().optional(),
+  lotSize: z.number().optional(),
+  yearBuilt: z.number().optional(),
+  features: z.array(z.string()).default([]),
+  images: z.array(z.string()).default([]),
+  status: z.enum(['draft', 'pending', 'approved', 'rejected', 'sold', 'expired']).optional(),
+  sellerId: z.string().optional(),
+})

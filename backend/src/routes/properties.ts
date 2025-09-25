@@ -3,64 +3,111 @@ import { randomUUID } from 'node:crypto'
 
 import { ApiError } from '../middleware/errorHandler'
 import type { Property } from '../models/property'
+import {
+  createProperty,
+  deleteProperty,
+  getPropertyById,
+  listProperties,
+  updateProperty,
+} from '../repositories/propertyRepository'
 import { logger } from '../utils/logger'
+import { propertySchema } from '../utils/validation'
 
 const router = Router()
 
-const properties = new Map<string, Property>()
+router.get('/', async (req, res, next) => {
+  try {
+    const { status, propertyType, city, minPrice, maxPrice, search } = req.query
 
-router.get('/', (_req, res) => {
-  res.json({ items: Array.from(properties.values()), count: properties.size })
+    const filters = {
+      status: typeof status === 'string' ? status : undefined,
+      propertyType: typeof propertyType === 'string' ? propertyType : undefined,
+      city: typeof city === 'string' ? city : undefined,
+      minPrice: typeof minPrice === 'string' ? Number(minPrice) : undefined,
+      maxPrice: typeof maxPrice === 'string' ? Number(maxPrice) : undefined,
+      search: typeof search === 'string' ? search : undefined,
+    }
+
+    const properties = await listProperties(filters)
+    res.json({ items: properties, count: properties.length })
+  } catch (error) {
+    next(error)
+  }
 })
 
-router.get('/:id', (req, res, next) => {
-  const property = properties.get(req.params.id)
-  if (!property) {
-    return next(new ApiError(404, 'Property not found'))
-  }
+router.get('/:id', async (req, res, next) => {
+  try {
+    const property = await getPropertyById(req.params.id)
+    if (!property) {
+      return next(new ApiError(404, 'Property not found'))
+    }
 
-  res.json(property)
+    return res.json(property)
+  } catch (error) {
+    return next(error)
+  }
 })
 
-router.post('/', (req, res) => {
-  const now = new Date().toISOString()
-  const property: Property = {
-    ...req.body,
-    propertyId: req.body.propertyId ?? randomUUID(),
-    createdAt: now,
-    updatedAt: now,
-  }
+router.post('/', async (req, res, next) => {
+  try {
+    const parseResult = propertySchema.safeParse(req.body)
+    if (!parseResult.success) {
+      return next(new ApiError(400, parseResult.error.message))
+    }
 
-  properties.set(property.propertyId, property)
-  logger.info('Created property', property.propertyId)
-  res.status(201).json(property)
+    const now = new Date().toISOString()
+    const body = parseResult.data
+
+    const property: Property = {
+      ...body,
+      propertyId: body.propertyId ?? randomUUID(),
+      createdAt: now,
+      updatedAt: now,
+      status: body.status ?? 'draft',
+      sellerId: body.sellerId ?? randomUUID(),
+      features: body.features ?? [],
+      images: body.images ?? [],
+    }
+
+    await createProperty(property)
+    logger.info('Created property', property.propertyId)
+    res.status(201).json(property)
+  } catch (error) {
+    next(error)
+  }
 })
 
-router.put('/:id', (req, res, next) => {
-  const existing = properties.get(req.params.id)
-  if (!existing) {
-    return next(new ApiError(404, 'Property not found'))
-  }
+router.put('/:id', async (req, res, next) => {
+  try {
+    const parseResult = propertySchema.partial().safeParse(req.body)
+    if (!parseResult.success) {
+      return next(new ApiError(400, parseResult.error.message))
+    }
 
-  const updated: Property = {
-    ...existing,
-    ...req.body,
-    updatedAt: new Date().toISOString(),
-  }
+    const updated = await updateProperty(req.params.id, parseResult.data)
+    if (!updated) {
+      return next(new ApiError(404, 'Property not found'))
+    }
 
-  properties.set(req.params.id, updated)
-  logger.info('Updated property', req.params.id)
-  res.json(updated)
+    logger.info('Updated property', req.params.id)
+    return res.json(updated)
+  } catch (error) {
+    return next(error)
+  }
 })
 
-router.delete('/:id', (req, res, next) => {
-  if (!properties.has(req.params.id)) {
-    return next(new ApiError(404, 'Property not found'))
-  }
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const removed = await deleteProperty(req.params.id)
+    if (!removed) {
+      return next(new ApiError(404, 'Property not found'))
+    }
 
-  properties.delete(req.params.id)
-  logger.warn('Deleted property', req.params.id)
-  res.status(204).send()
+    logger.warn('Deleted property', req.params.id)
+    return res.status(204).send()
+  } catch (error) {
+    return next(error)
+  }
 })
 
 export default router
