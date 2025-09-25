@@ -5,9 +5,9 @@ import Footer from "../components/Footer";
 
 const BaseLayout = () => {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen bg-slate-100 text-slate-900">
       <Header />
-      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 pb-16 pt-8 md:px-8">
+      <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-10 px-4 pb-20 pt-12 md:px-8">
         <Outlet />
       </main>
       <Footer />

@@ -5,6 +5,7 @@ const navItems = [
   { to: "/properties", label: "Properties" },
   { to: "/sell", label: "Sell" },
   { to: "/dashboard", label: "Dashboard" },
+  { to: '/admin', label: 'Admin' },
 ];
 
 const Header = () => {
@@ -45,6 +46,12 @@ const Header = () => {
             className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-brand-500 hover:text-brand-600"
           >
             Sign In
+          </Link>
+          <Link
+            to="/dashboard"
+            className="rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-brand-500 hover:text-brand-600"
+          >
+            Seller View
           </Link>
           <Link
             to="/sell"
