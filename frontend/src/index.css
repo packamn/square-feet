@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  font-feature-settings:
+    "liga" 1,
+    "kern" 1;
+}
+
+body {
+  @apply bg-slate-50 font-body text-slate-900 antialiased;
+}
+
+a {
+  @apply text-brand-600 transition-colors hover:text-brand-700;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-slate-900;
+  }
+  p {
+    @apply font-body;
+  }
+}
