@@ -12,6 +12,7 @@ export type PropertyFilters = {
   minPrice?: number
   maxPrice?: number
   search?: string
+  sellerId?: string
 }
 
 type UsePropertiesResult = {
@@ -34,6 +35,7 @@ export const useProperties = (filters: PropertyFilters = {}): UsePropertiesResul
     if (typeof filters.minPrice === 'number') params.set('minPrice', String(filters.minPrice))
     if (typeof filters.maxPrice === 'number') params.set('maxPrice', String(filters.maxPrice))
     if (filters.search) params.set('search', filters.search)
+    if (filters.sellerId) params.set('sellerId', filters.sellerId)
 
     const result = params.toString()
     return result ? `?${result}` : ''

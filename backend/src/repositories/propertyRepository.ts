@@ -17,6 +17,7 @@ type PropertyFilters = {
   minPrice?: number;
   maxPrice?: number;
   search?: string;
+  sellerId?: string;
 };
 
 const TABLE_NAME = dynamoConfig.tableName;
@@ -33,6 +34,10 @@ export const listProperties = async (filters: PropertyFilters = {}): Promise<Pro
   const searchTerm = filters.search?.toLowerCase();
 
   return items.filter((property) => {
+    if (filters.sellerId && property.sellerId !== filters.sellerId) {
+      return false;
+    }
+
     if (statusFilter && statusFilter.length > 0 && !statusFilter.includes(property.status.toLowerCase())) {
       return false;
     }

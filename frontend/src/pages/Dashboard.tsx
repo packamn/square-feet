@@ -7,13 +7,14 @@ import { useProperties } from '../hooks/useProperties'
 import { SellerPropertyForm } from '../sections/dashboard/SellerPropertyForm'
 import { SellerPropertiesToolbar } from '../sections/dashboard/SellerPropertiesToolbar'
 import { SellerPropertyModal } from '../sections/dashboard/SellerPropertyModal'
+import { MOCK_SELLER_ID } from '../constants/mockSeller'
 
 const SellerDashboard = () => {
   const [filters, setFilters] = useState<PropertyFilters>({ status: 'draft,pending,approved' })
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
 
-  const { data, status, error } = useProperties({ ...filters })
+  const { data, status, error } = useProperties({ sellerId: MOCK_SELLER_ID, ...filters })
 
   const summary = useMemo(() => {
     if (!filters.status) return 'All listings'
