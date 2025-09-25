@@ -1,9 +1,10 @@
 import type { PropertyFilters } from '../../hooks/useProperties'
+import { CheckCircleIcon, ClockIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
 
 const statusOptions = [
-  { label: 'Drafts', value: 'draft' },
-  { label: 'Pending', value: 'pending' },
-  { label: 'Approved', value: 'approved' },
+  { label: 'Drafts', value: 'draft', icon: PencilSquareIcon },
+  { label: 'Pending', value: 'pending', icon: ClockIcon },
+  { label: 'Approved', value: 'approved', icon: CheckCircleIcon },
 ]
 
 const viewOptions = [
@@ -34,17 +35,19 @@ export const SellerPropertiesToolbar = ({ filters, onFiltersChange }: SellerProp
       <div className="flex flex-wrap gap-2">
         {statusOptions.map((option) => {
           const isActive = filters.status?.split(',').includes(option.value)
+          const Icon = option.icon
           return (
             <button
               key={option.value}
               type="button"
               onClick={() => toggleStatus(option.value)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+              className={`flex items-center gap-2 rounded-full px-3 py-2 text-xs font-semibold uppercase tracking-wide transition ${
                 isActive
                   ? 'bg-brand-500 text-white shadow-lg shadow-brand-500/20'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
+              <Icon className="h-4 w-4" />
               {option.label}
             </button>
           )

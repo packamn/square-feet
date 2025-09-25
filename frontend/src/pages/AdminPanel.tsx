@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import PropertyCard from '../components/PropertyCard'
 import { useProperties } from '../hooks/useProperties'
@@ -39,7 +40,12 @@ const AdminPanel = () => {
 
   return (
     <section className="space-y-6">
-      <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <motion.header
+        className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
         <div className="space-y-1">
           <h1 className="text-3xl font-semibold text-slate-900">Admin control center</h1>
           <p className="text-sm text-slate-600">Review, approve, and update properties across the SquareFeet network.</p>
@@ -47,7 +53,7 @@ const AdminPanel = () => {
         <div className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm text-slate-600 shadow-sm">
           {summary}
         </div>
-      </header>
+      </motion.header>
 
       <AdminFilters filters={filters} onFiltersChange={setFilters} />
       <AdminBulkActions
@@ -63,14 +69,18 @@ const AdminPanel = () => {
         <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-600">Failed to load properties: {error}</p>
       )}
 
-      {status === 'success' && data.length > 0 && (
-        <AdminPropertiesTable
-          properties={data}
-          selectedIds={selectedIds}
-          onToggleSelection={toggleSelection}
-          onViewDetail={setDetailProperty}
-        />
-      )}
+      <AnimatePresence>
+        {status === 'success' && data.length > 0 && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <AdminPropertiesTable
+              properties={data}
+              selectedIds={selectedIds}
+              onToggleSelection={toggleSelection}
+              onViewDetail={setDetailProperty}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {status === 'success' && data.length === 0 && (
         <div className="rounded-2xl border border-dashed border-slate-300 p-10 text-center text-sm text-slate-500">

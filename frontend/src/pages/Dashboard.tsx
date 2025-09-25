@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 import PropertyCard from '../components/PropertyCard'
 import type { Property } from '../types/property'
@@ -39,42 +40,59 @@ const SellerDashboard = () => {
 
   return (
     <section className="space-y-6">
-      <header className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <motion.header
+        className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+      >
         <div className="space-y-1">
           <h1 className="text-3xl font-semibold text-slate-900">Seller dashboard</h1>
           <p className="text-sm text-slate-600">Monitor drafts, track approval status, and publish listings instantly.</p>
         </div>
         <button
           onClick={openCreate}
-          className="inline-flex items-center justify-center rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow transition hover:bg-brand-600"
+          className="inline-flex items-center justify-center rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow transition hover:-translate-y-0.5 hover:bg-brand-600"
         >
           Create new listing
         </button>
-      </header>
+      </motion.header>
 
       <SellerPropertiesToolbar filters={filters} onFiltersChange={setFilters} />
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">{summary}</div>
+      <div className="card-surface p-4 text-sm text-slate-600">{summary}</div>
 
       {status === 'loading' && <p className="text-sm text-slate-500">Loading your listings...</p>}
       {status === 'error' && (
         <p className="rounded-2xl bg-red-50 p-4 text-sm text-red-600">Failed to load properties: {error}</p>
       )}
 
-      {status === 'success' && data.length > 0 && (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {data.map((property) => (
-            <button
-              key={property.propertyId}
-              type="button"
-              className="text-left"
-              onClick={() => openEdit(property)}
-            >
-              <PropertyCard property={property} />
-            </button>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {status === 'success' && data.length > 0 && (
+          <motion.div
+            layout
+            className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            {data.map((property) => (
+              <motion.button
+                key={property.propertyId}
+                type="button"
+                className="text-left focus:outline-none focus:ring-2 focus:ring-brand-200"
+                onClick={() => openEdit(property)}
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
+                <PropertyCard property={property} />
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {status === 'success' && data.length === 0 && (
         <div className="rounded-2xl border border-dashed border-slate-300 p-10 text-center text-sm text-slate-500">
