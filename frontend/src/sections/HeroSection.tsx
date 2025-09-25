@@ -24,7 +24,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-brand-600"
+          className="inline-flex items-center gap-2 rounded-full bg-brand-100/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-brand-600 shadow-sm"
         >
           Elevated buying & selling journeys
         </motion.div>
@@ -74,11 +74,17 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.35 }}
           className="grid gap-4 sm:grid-cols-3"
         >
-          {supportCards.map((card) => (
-            <li key={card.title} className="rounded-2xl border border-slate-200 bg-white/70 p-4 shadow-sm">
+          {supportCards.map((card, index) => (
+            <motion.li
+              key={card.title}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 + index * 0.05, duration: 0.35 }}
+              className="hover-lift rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-card"
+            >
               <p className="text-xs uppercase tracking-[0.2em] text-brand-500">{card.title}</p>
               <p className="mt-2 text-sm text-slate-500">{card.description}</p>
-            </li>
+            </motion.li>
           ))}
         </motion.ul>
       </div>
