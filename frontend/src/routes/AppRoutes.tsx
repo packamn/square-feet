@@ -1,4 +1,4 @@
-import { ComponentType } from 'react'
+import type { ComponentType } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import BaseLayout from '../layouts/BaseLayout'
