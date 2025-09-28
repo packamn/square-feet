@@ -1,0 +1,20 @@
+# Node & general
+node_modules
+npm-debug.log
+dist
+tmp
+*.log
+
+# Frontend assets not needed for backend image
+frontend
+
+# Local data & config
+dynamodb-data
+.env
+.env.*
+
+# VCS
+.git
+.gitignore
+.DS_Store
+

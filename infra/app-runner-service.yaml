@@ -1,0 +1,37 @@
+ServiceName: squarefeet-api
+SourceConfiguration:
+  ImageRepository:
+    ImageIdentifier: <ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/squarefeet-api:latest
+    ImageRepositoryType: ECR
+    ImageConfiguration:
+      Port: "5001"
+      RuntimeEnvironmentVariables:
+        - Name: NODE_ENV
+          Value: production
+        - Name: PORT
+          Value: "5001"
+        - Name: AWS_REGION
+          Value: us-east-1
+        - Name: PROPERTIES_TABLE
+          Value: Properties
+        - Name: CORS_ORIGIN
+          Value: https://squarefeet-demo.s3-website-us-east-1.amazonaws.com
+        - Name: DYNAMODB_ENDPOINT
+          Value: https://dynamodb.us-east-1.amazonaws.com
+  AutoDeploymentsEnabled: true
+InstanceConfiguration:
+  Cpu: 1 vCPU
+  Memory: 2 GB
+  InstanceRoleArn: arn:aws:iam::<ACCOUNT_ID>:role/AppRunnerSquareFeetRole
+VpcConnectorArn: arn:aws:apprunner:us-east-1:<ACCOUNT_ID>:vpcconnector/squarefeet-apprunner
+HealthCheckConfiguration:
+  Protocol: HTTP
+  Path: /api/health
+  Interval: 10
+  Timeout: 5
+  HealthyThreshold: 1
+  UnhealthyThreshold: 5
+ObservabilityConfiguration:
+  TraceConfiguration:
+    Vendor: AWSXRAY
+
