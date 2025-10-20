@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom'
 const supportCards = [
   {
     title: 'Personalized tours',
-    description: 'Virtual and in-person walkthroughs guided by local experts tailored to your schedule.',
+    description: 'In-person and video showings guided by our team tailored to your schedule.',
   },
   {
-    title: 'Investment insights',
-    description: 'Live market data, valuation forecasts, and rental projections built into every listing.',
+    title: 'Remote property registration',
+    description: 'You can have your property registered 100% remotely from outside India with the help of a family member or the Squarefeet Team.',
   },
   {
-    title: 'Concierge closing',
-    description: 'Dedicated advisors orchestrate financing, inspections, and closing logistics end-to-end.',
+    title: 'Construction in-house',
+    description: 'After purchase of your plot, you have the option of having your dream house custom-built by our team.',
   },
 ]
 
@@ -26,7 +26,7 @@ const HeroSection = () => {
           transition={{ duration: 0.5 }}
           className="inline-flex items-center gap-2 rounded-full bg-brand-100/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-brand-600 shadow-sm"
         >
-          Elevated buying & selling journeys
+          Moving back to Hyderabad from USA?
         </motion.div>
 
         <motion.h1
@@ -35,7 +35,7 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-[3.5rem]"
         >
-          Discover the properties that move your life forward
+          Buy vetted residential plots all around Hyderabad!
         </motion.h1>
 
         <motion.p
@@ -44,8 +44,7 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-lg text-slate-600 md:max-w-xl"
         >
-          SquareFeet blends curated inventory, real-time analytics, and concierge-grade service so every buyer, seller, and
-          investor feels confident from discovery to closing day.
+          Squarefeet Property Group brings you residential plots fully verified by our legal team, so that you don't have to worry about those headaches.
         </motion.p>
 
         <motion.div
@@ -58,13 +57,13 @@ const HeroSection = () => {
             to="/properties"
             className="inline-flex items-center justify-center rounded-full bg-brand-500 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition hover:bg-brand-600 hover:shadow-xl"
           >
-            Browse listings
+            Browse Listings
           </Link>
           <Link
             to="/sell"
             className="inline-flex items-center justify-center rounded-full border border-slate-200 px-6 py-3 text-sm font-semibold text-slate-700 transition hover:border-brand-500 hover:text-brand-600"
           >
-            Request valuation
+            Request Evaluation
           </Link>
         </motion.div>
 

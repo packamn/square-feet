@@ -4,24 +4,17 @@ import { AnimatePresence, motion } from 'framer-motion'
 const testimonials = [
   {
     quote:
-      'SquareFeet helped us shortlist three properties in two days and handled every negotiation nuance. We closed in under three weeks.',
-    name: 'Amelia & Jordan Chen',
-    role: 'Relocating founders · Austin, TX',
-    avatar: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=200&q=80',
+      'Venkateshwarlu uncle is very knowledgeable, friendly and cared about our specific needs. Uncle and his team have helped us with the construction of our family home in Nagole, Hyderabad and also the purchase of another residential plot for investment. I highly recommend their services.',
+    name: 'Karunakar Vanguru',
+    role: 'IT Professional – Raleigh, NC',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
   },
   {
     quote:
-      'As a first-time investor, the data room and rental projections gave me confidence. Their team coordinated financing flawlessly.',
-    name: 'Lena Kapoor',
-    role: 'Private investor · Seattle, WA',
-    avatar: 'https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?auto=format&fit=crop&w=200&q=80',
-  },
-  {
-    quote:
-      'From staging to closing, the SquareFeet concierge and partner network delivered. We accepted an above-ask offer in 48 hours.',
-    name: 'Marcus and Devon Reyes',
-    role: 'Sellers · San Francisco, CA',
-    avatar: 'https://images.unsplash.com/photo-1520813792240-56fc4a3765a7?auto=format&fit=crop&w=200&q=80',
+      'I\'ve worked with the Squarefeet team on multiple occasions. They are very approachable and trustworthy and always pay attention to detail. Will definitely be my first choice for any real estate or construction needs. It\'s my pleasure to recommend them.',
+    name: 'Sundeep Kumar Ch',
+    role: 'Data Architect – Antioch, CA',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
   },
 ]
 
@@ -47,7 +40,7 @@ const Testimonials = () => {
               transition={{ duration: 0.4 }}
               className="space-y-6"
             >
-              <p className="text-xl leading-relaxed text-slate-700 sm:text-2xl">“{testimonial.quote}”</p>
+              <p className="text-xl leading-relaxed text-slate-700 sm:text-2xl">"{testimonial.quote}"</p>
               <footer className="flex items-center gap-4">
                 <img
                   src={testimonial.avatar}

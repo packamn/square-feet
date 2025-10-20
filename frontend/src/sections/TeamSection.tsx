@@ -1,21 +1,21 @@
 const team = [
   {
-    name: 'Brooke Winters',
-    role: 'Founder & Managing Broker',
-    bio: 'Former proptech VP with 15 years of luxury brokerage experience across SF, NY, and Austin.',
-    avatar: 'https://images.unsplash.com/photo-1485206412256-701ccc5b93ca?auto=format&fit=crop&w=200&q=80',
+    name: 'Yadavally Venkateshwarlu',
+    role: 'Managing Director',
+    bio: 'Former Deputy Engineer of over 30 years of experience working for the Irrigation Department of the government of Telangana (erstwhile United AP) turned to private construction since 2014. Leads our Construction Division along with Site inspections and Flood Management.',
+    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: 'Jules Ramirez',
-    role: 'Head of Client Strategy',
-    bio: 'Drives buyer success teams and analytics operations, specializing in relocation and investment portfolios.',
-    avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
+    name: 'Manthrala Jyothi',
+    role: 'Acquisitions & Legal',
+    bio: 'Former Teacher for the government of Telangana, practicing Lawyer at the Ranga Reddy District Court. Leads our Acquisitions and Legal Division.',
+    avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
   },
   {
-    name: 'Noah Mitchell',
-    role: 'Director of Listings',
-    bio: 'Architects fast-track listing programs with concierge staging, marketing, and partner network coordination.',
-    avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80',
+    name: 'Yadavally Mourya',
+    role: 'Sales',
+    bio: 'Data Analyst & IT Consulting Business Operator. Leads our NRI Sales Division.',
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
   },
 ]
 
@@ -27,8 +27,7 @@ const TeamSection = () => {
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand-500">Advisors</p>
           <h2 className="font-display text-3xl font-semibold text-slate-900">Built by operators, guided by data</h2>
           <p className="text-slate-600">
-            Our leadership team combines luxury brokerage, investment analytics, and white-glove client service. We’re here to
-            unlock your next move—no matter the city.
+            Family owned and operated business. Our Team includes
           </p>
         </div>
         <a

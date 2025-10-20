@@ -1,18 +1,18 @@
 const features = [
   {
-    title: 'Curated inventory',
+    title: 'Family owned',
     description:
-      'Each listing is vetted for documentation, valuation accuracy, and overall appeal before it hits the marketplace.',
+      'We are a fully family-owned business with each one of us heading a different department of the business.',
   },
   {
-    title: 'Real-time intelligence',
+    title: 'Curated inventory',
     description:
-      'Neighborhood trends, absorption rates, and rental projections packaged into digestible insights for every client.',
+      'All the properties listed here are either owned by us or are fully vetted by us, thereby eliminating the headache of unverified listings and online scams.',
   },
   {
     title: 'Partner network',
     description:
-      'Financing, inspections, staging, and legal—our vetted partners keep transactions effortless and transparent.',
+      'Financing, inspections, repairs, construction, material supply and legal—our vetted partners keep transactions effortless and transparent.',
   },
 ]
 
@@ -21,10 +21,9 @@ const WhyChooseUs = () => {
     <section className="rounded-3xl bg-white p-8 shadow-card sm:p-10">
       <div className="flex flex-col gap-6">
         <div className="space-y-2">
-          <h2 className="font-display text-3xl font-semibold text-slate-900">Why work with SquareFeet?</h2>
+          <h2 className="font-display text-3xl font-semibold text-slate-900">Why work with us?</h2>
           <p className="text-slate-600">
-            Purpose-built for discerning buyers, investors, and sellers—giving you the clarity, pace, and confidence today’s
-            market requires.
+            Purpose-built for NRIs looking to buy vetted properties in Hyderabad.
           </p>
         </div>
 

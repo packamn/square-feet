@@ -41,7 +41,7 @@ const Sell = () => {
       <section className="rounded-3xl bg-gradient-to-r from-brand-500 via-brand-500/90 to-brand-600 p-10 text-white shadow-card">
         <div className="space-y-4 md:max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-white/80">List with SquareFeet</p>
-          <h1 className="font-display text-4xl font-semibold leading-tight">Sell faster with concierge-grade execution</h1>
+          <h1 className="font-display text-4xl font-semibold leading-tight">List with Squarefeet</h1>
           <p className="text-white/85">
             We combine premium marketing, real-time market intelligence, and a hands-on closing team. You focus on the next
             chapter—we handle every detail between.
@@ -102,7 +102,7 @@ const Sell = () => {
       <section className="rounded-3xl bg-slate-900 p-10 text-white shadow-card">
         <div className="space-y-3 md:flex md:items-center md:justify-between">
           <div className="space-y-2 md:max-w-xl">
-            <h3 className="font-display text-2xl font-semibold">We’re ready when you are.</h3>
+            <h3 className="font-display text-2xl font-semibold">We're ready when you are.</h3>
             <p className="text-sm text-white/80">
               Chat with a SquareFeet listing advisor to map pricing, staging, and go-live timelines in one call.
             </p>

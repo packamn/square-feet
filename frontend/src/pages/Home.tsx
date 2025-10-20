@@ -1,6 +1,8 @@
 import FeaturedProperties from '../sections/FeaturedProperties'
 import HeroSection from '../sections/HeroSection'
 import WhyChooseUs from '../sections/WhyChooseUs'
+import Testimonials from '../sections/Testimonials'
+import TeamSection from '../sections/TeamSection'
 import { usePageMetadata } from '../hooks/usePageMetadata'
 import { motion } from 'framer-motion'
 
@@ -24,8 +26,8 @@ const sectionVariants = {
 
 const Home = () => {
   usePageMetadata({
-    title: 'SquareFeet · Real Estate Platform',
-    description: 'Browse curated properties, manage listings, and coordinate approvals with the SquareFeet real estate platform.',
+    title: 'Squarefeet · Vetted Residential Plots in Hyderabad',
+    description: 'Buy fully verified residential plots in Hyderabad, India. Purpose-built for NRIs with legal vetting, remote registration, and in-house construction services.',
   })
 
   return (
@@ -43,6 +45,12 @@ const Home = () => {
       </motion.section>
       <motion.section variants={sectionVariants} className="mx-auto w-full max-w-6xl px-4 pb-12 sm:px-6 lg:px-8">
         <WhyChooseUs />
+      </motion.section>
+      <motion.section variants={sectionVariants} className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <Testimonials />
+      </motion.section>
+      <motion.section variants={sectionVariants} className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <TeamSection />
       </motion.section>
     </motion.div>
   )
