@@ -110,8 +110,8 @@ const HeroSection = () => {
             <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">Virtual tour ready</span>
           </div>
           <div className="grid gap-3 text-sm text-white/80 sm:grid-cols-2">
-            <p>5 Bed · 4.5 Bath · 5,200 sq.ft · Austin, TX</p>
-            <p>$2,980,000 · Smart automation · Private rooftop lounge</p>
+            <p>Residential Plot · 2,500 sq.ft · Nagole, Hyderabad</p>
+            <p>₹ 1,200,000 · Premium Location · Legal Verified</p>
           </div>
         </div>
       </motion.div>
