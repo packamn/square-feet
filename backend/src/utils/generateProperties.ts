@@ -14,42 +14,50 @@ const statuses: PropertyStatus[] = [
   "sold",
   "expired",
 ];
+
+// For Hyderabad plots, mostly "land" type
 const propertyTypes: PropertyType[] = [
+  "land",
   "house",
   "apartment",
-  "condo",
-  "land",
-  "commercial",
 ];
 
-const cities = [
-  { city: "San Francisco", state: "CA" },
-  { city: "Austin", state: "TX" },
-  { city: "New York", state: "NY" },
-  { city: "Seattle", state: "WA" },
-  { city: "Miami", state: "FL" },
-  { city: "Denver", state: "CO" },
+// Hyderabad areas/neighborhoods
+const areas = [
+  { area: "Nagole", zone: "RR" },
+  { area: "Gachibowli", zone: "RR" },
+  { area: "HITEC City", zone: "RR" },
+  { area: "Kukatpally", zone: "Medchal" },
+  { area: "Ameerpet", zone: "Central" },
+  { area: "Jubilee Hills", zone: "Central" },
+  { area: "Banjara Hills", zone: "Central" },
+  { area: "Secunderabad", zone: "North" },
+  { area: "Bowenpally", zone: "North" },
+  { area: "Malkajgiri", zone: "North" },
+  { area: "Saroor Nagar", zone: "South" },
+  { area: "Tolichowki", zone: "South" },
+  { area: "Attapur", zone: "South" },
 ];
 
 const featuresPool = [
-  "Ocean View",
-  "Private Pool",
-  "Smart Home Automation",
-  "Chef Kitchen",
-  "Floor-to-Ceiling Windows",
-  "Rooftop Deck",
-  "24/7 Concierge",
-  "EV Charging",
-  "Wine Cellar",
-  "Home Theater",
+  "Corner Plot",
+  "Facing Park",
+  "Gated Community",
+  "Legal Verified",
+  "Clear Ownership",
+  "East Facing",
+  "Underground Water",
+  "Good Approach Road",
+  "Peaceful Locality",
+  "Near Schools",
 ];
 
 const placeholderImages = [
-  "https://images.unsplash.com/photo-1505691723518-36a5ac3be353?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80", // Land plot
+  "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=1600&q=80", // Aerial view
+  "https://images.unsplash.com/photo-1520763185298-1b434c919eba?auto=format&fit=crop&w=1600&q=80", // Property
+  "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=80", // Landscape
+  "https://images.unsplash.com/photo-1603808033192-082d6919d3e1?auto=format&fit=crop&w=1600&q=80", // Architecture
 ];
 
 const randomFrom = <T>(arr: T[]): T =>
@@ -57,39 +65,44 @@ const randomFrom = <T>(arr: T[]): T =>
 
 const randomFeatures = () => {
   const shuffled = [...featuresPool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, Math.floor(Math.random() * 4) + 3);
+  return shuffled.slice(0, Math.floor(Math.random() * 3) + 2);
 };
 
 export const generateProperty = (statusOverride?: PropertyStatus): Property => {
-  const { city, state } = randomFrom(cities);
+  const { area, zone } = randomFrom(areas);
   const propertyId = randomUUID();
   const status = statusOverride ?? randomFrom(statuses);
   const propertyType = randomFrom(propertyTypes);
   const now = new Date().toISOString();
-  const price = Math.floor(Math.random() * 3_500_000) + 350_000;
+  
+  // Hyderabad plot prices in INR (1,200,000 to 8,000,000 rupees)
+  const price = Math.floor(Math.random() * 6_800_000) + 1_200_000;
+  
+  // Plot sizes: 500-5000 sq.ft
+  const squareFootage = Math.floor(Math.random() * 4500) + 500;
 
   return {
     propertyId,
-    title: `${randomFrom(["Skyline", "Crest", "Vista", "Harbor", "Summit"])} ${randomFrom(
-      ["Residences", "Estates", "Manor", "Heights", "Collection"],
-    )}`,
+    title: `${randomFrom(["Premium", "Luxury", "Spacious", "Modern", "Elegance"])} ${randomFrom(
+      ["Plots", "Residential Plot", "Land Plot", "Property", "Estate"],
+    )} in ${area}`,
     description:
-      "Thoughtfully designed luxury property with premium finishes, expansive living spaces, and breathtaking views.",
+      "Thoughtfully located residential plot in prime Hyderabad locality with legal verification, clear ownership, and excellent investment potential. Ideal for building your dream home.",
     price,
-    currency: "USD",
+    currency: "INR",
     address: {
-      street: `${Math.floor(Math.random() * 900) + 100} ${randomFrom(["Market St", "Broadway", "Ocean Ave", "Pine St", "Lombard St"])}`,
-      city,
-      state,
-      zipCode: `${Math.floor(Math.random() * 90000) + 10000}`,
-      country: "USA",
+      street: `${randomFrom(["Road", "Street", "Lane", "Avenue", "Boulevard"])} ${Math.floor(Math.random() * 100) + 1}, ${area}`,
+      city: "Hyderabad",
+      state: "Telangana",
+      zipCode: `5000${Math.floor(Math.random() * 90) + 10}`,
+      country: "India",
     },
     propertyType,
-    bedrooms: Math.floor(Math.random() * 4) + 2,
-    bathrooms: Math.floor(Math.random() * 3) + 2,
-    squareFootage: Math.floor(Math.random() * 2500) + 1400,
-    lotSize: propertyType === "land" ? Math.random() * 2 + 0.5 : undefined,
-    yearBuilt: Math.floor(Math.random() * 30) + 1995,
+    bedrooms: propertyType === "land" ? undefined : Math.floor(Math.random() * 4) + 2,
+    bathrooms: propertyType === "land" ? undefined : Math.floor(Math.random() * 3) + 2,
+    squareFootage,
+    lotSize: propertyType === "land" ? squareFootage / 43.56 : undefined, // Convert to acres
+    yearBuilt: Math.floor(Math.random() * 10) + 2015,
     features: randomFeatures(),
     images: placeholderImages.slice(0, 3),
     status,
