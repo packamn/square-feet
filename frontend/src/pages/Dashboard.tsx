@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import toast from 'react-hot-toast'
 
 import PropertyCard from '../components/PropertyCard'
 import { PropertyCardSkeleton } from '../components/Skeletons'
@@ -11,17 +12,19 @@ import { SellerPropertiesToolbar } from '../sections/dashboard/SellerPropertiesT
 import { SellerPropertyModal } from '../sections/dashboard/SellerPropertyModal'
 import { MOCK_SELLER_ID } from '../constants/mockSeller'
 import { usePageMetadata } from '../hooks/usePageMetadata'
+import { apiFetch } from '../utils/api'
 
 const SellerDashboard = () => {
   usePageMetadata({
     title: 'Seller Dashboard · SquareFeet',
     description: 'Manage drafts, monitor approvals, and publish listings instantly from the SquareFeet seller dashboard.',
   })
-  const [filters, setFilters] = useState<PropertyFilters>({ status: 'draft,pending,approved' })
+  const [filters, setFilters] = useState<PropertyFilters>({ status: 'pending,approved' })
   const [isModalOpen, setModalOpen] = useState(false)
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null)
+  const [isSaving, setIsSaving] = useState(false)
 
-  const { data, status, error } = useProperties({ sellerId: MOCK_SELLER_ID, ...filters })
+  const { data, status, error, refetch } = useProperties({ sellerId: MOCK_SELLER_ID, ...filters })
 
   const summary = useMemo(() => {
     if (!filters.status) return 'All listings'
@@ -38,10 +41,29 @@ const SellerDashboard = () => {
     setModalOpen(true)
   }
 
-  const handleSubmit = (values: Partial<Property>) => {
-    // Placeholder for API integration; would call POST/PUT here.
-    console.log('TODO submit listing payload', values)
-    setModalOpen(false)
+  const handleSubmit = async (values: Partial<Property>) => {
+    setIsSaving(true)
+
+    try {
+      await apiFetch<Property>('/properties', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...values,
+          currency: 'INR',
+        }),
+      })
+
+      toast.success('Property listing created! Pending admin approval.')
+      setModalOpen(false)
+      
+      // Refresh the property list to show new listing
+      refetch()
+    } catch (error) {
+      console.error('Failed to create property:', error)
+      toast.error('Failed to create property. Please check all fields and try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -117,7 +139,7 @@ const SellerDashboard = () => {
         property={selectedProperty}
         onClose={() => setModalOpen(false)}
       >
-        <SellerPropertyForm property={selectedProperty ?? undefined} onSubmit={handleSubmit} isSaving={false} />
+        <SellerPropertyForm property={selectedProperty ?? undefined} onSubmit={handleSubmit} isSaving={isSaving} />
       </SellerPropertyModal>
     </section>
   )

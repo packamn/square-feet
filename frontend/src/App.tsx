@@ -1,4 +1,5 @@
 import { BrowserRouter } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
 import AppRoutes from './routes/AppRoutes'
 import HeroSection from './sections/HeroSection'
@@ -36,6 +37,7 @@ const LandingContent = () => (
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" />
       <AppRoutes LandingOverride={LandingContent} />
     </BrowserRouter>
   )

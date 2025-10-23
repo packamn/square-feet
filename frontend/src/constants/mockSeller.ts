@@ -1,1 +1,1 @@
-export const MOCK_SELLER_ID = 'seller-1234'
+export const MOCK_SELLER_ID = 'SELLER_DEMO_001'

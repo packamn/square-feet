@@ -9,6 +9,7 @@ export type PropertyFormValues = {
   price: number
   bedrooms?: number
   bathrooms?: number
+  squareFootage?: number
   street: string
   city: string
   state: string
@@ -30,6 +31,7 @@ const blankValues: PropertyFormValues = {
   price: 0,
   bedrooms: undefined,
   bathrooms: undefined,
+  squareFootage: undefined,
   street: '',
   city: '',
   state: '',
@@ -48,6 +50,7 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
       price: property.price,
       bedrooms: property.bedrooms,
       bathrooms: property.bathrooms,
+      squareFootage: property.squareFootage,
       street: property.address.street,
       city: property.address.city,
       state: property.address.state,
@@ -78,15 +81,16 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
       price: Number(values.price ?? 0),
       bedrooms: values.bedrooms ? Number(values.bedrooms) : undefined,
       bathrooms: values.bathrooms ? Number(values.bathrooms) : undefined,
+      squareFootage: values.squareFootage ? Number(values.squareFootage) : undefined,
       address: {
         street: values.street,
         city: values.city,
         state: values.state,
         zipCode: values.zipCode,
-        country: 'USA',
+        country: 'India',
       },
       propertyType: values.propertyType,
-      status: values.status,
+      // Don't send status - let backend default to "pending"
       features: values.features
         ? values.features.split(',').map((feature) => feature.trim()).filter(Boolean)
         : [],
@@ -101,7 +105,7 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
         <label className="text-sm font-semibold text-slate-700">Title</label>
         <input
           {...register('title', { required: true })}
-          placeholder="Modern skyline penthouse"
+          placeholder="Premium Plot in Nagole"
           className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
         />
         {errors.title && <p className="text-xs text-red-500">Provide a listing title.</p>}
@@ -112,7 +116,7 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
         <textarea
           {...register('description', { required: true })}
           rows={4}
-          placeholder="Highlight standout amenities, views, and lifestyle appeal."
+          placeholder="Describe location, plot features, legal status, and investment potential."
           className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
         />
         {errors.description && <p className="text-xs text-red-500">Add a short property description.</p>}
@@ -120,10 +124,20 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
 
       <div className="grid gap-3 md:grid-cols-3">
         <div>
-          <label className="text-sm font-semibold text-slate-700">Price (USD)</label>
+          <label className="text-sm font-semibold text-slate-700">Price (INR ₹)</label>
           <input
             type="number"
             {...register('price', { valueAsNumber: true })}
+            placeholder="1500000"
+            className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-semibold text-slate-700">Square Footage</label>
+          <input
+            type="number"
+            {...register('squareFootage', { valueAsNumber: true })}
+            placeholder="1200"
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
           />
         </div>
@@ -135,6 +149,9 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
           />
         </div>
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
         <div>
           <label className="text-sm font-semibold text-slate-700">Bathrooms</label>
           <input
@@ -168,46 +185,34 @@ export const SellerPropertyForm = ({ property, onSubmit, isSaving }: SellerPrope
           />
         </div>
         <div>
-          <label className="text-sm font-semibold text-slate-700">Zip code</label>
+          <label className="text-sm font-semibold text-slate-700">Pin code</label>
           <input
             {...register('zipCode')}
+            placeholder="500032"
             className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
           />
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-[2fr_1fr]">
-        <div>
-          <label className="text-sm font-semibold text-slate-700">Property type</label>
-          <select
-            {...register('propertyType')}
-            className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-          >
-            <option value="house">House</option>
-            <option value="apartment">Apartment</option>
-            <option value="condo">Condo</option>
-            <option value="land">Land</option>
-            <option value="commercial">Commercial</option>
-          </select>
-        </div>
-        <div>
-          <label className="text-sm font-semibold text-slate-700">Status</label>
-          <select
-            {...register('status')}
-            className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
-          >
-            <option value="draft">Draft</option>
-            <option value="pending">Pending</option>
-            <option value="approved">Approved</option>
-          </select>
-        </div>
+      <div>
+        <label className="text-sm font-semibold text-slate-700">Property type</label>
+        <select
+          {...register('propertyType')}
+          className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
+        >
+          <option value="house">House</option>
+          <option value="apartment">Apartment</option>
+          <option value="condo">Condo</option>
+          <option value="land">Land</option>
+          <option value="commercial">Commercial</option>
+        </select>
       </div>
 
       <div>
         <label className="text-sm font-semibold text-slate-700">Features</label>
         <input
           {...register('features')}
-          placeholder="Rooftop deck, smart home automation, EV charging"
+          placeholder="Corner Plot, Legal Verified, Gated Community"
           className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100"
         />
       </div>

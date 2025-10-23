@@ -19,12 +19,14 @@ type UsePropertiesResult = {
   data: Property[]
   status: Status
   error: string | null
+  refetch: () => void
 }
 
 export const useProperties = (filters: PropertyFilters = {}): UsePropertiesResult => {
   const [data, setData] = useState<Property[]>([])
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState<string | null>(null)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   const queryString = useMemo(() => {
     const params = new URLSearchParams()
@@ -41,6 +43,8 @@ export const useProperties = (filters: PropertyFilters = {}): UsePropertiesResul
     return result ? `?${result}` : ''
   }, [filters])
 
+  const refetch = () => setRefreshKey((prev) => prev + 1)
+
   useEffect(() => {
     setStatus('loading')
 
@@ -53,7 +57,7 @@ export const useProperties = (filters: PropertyFilters = {}): UsePropertiesResul
         setStatus('error')
         setError(err.message)
       })
-  }, [queryString])
+  }, [queryString, refreshKey])
 
-  return { data, status, error }
+  return { data, status, error, refetch }
 }

@@ -12,7 +12,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
   })
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl">
+    <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-card transition hover:-translate-y-1 hover:border-brand-200 hover:shadow-xl">
       <div className="h-48 w-full overflow-hidden">
         <img
           src={
@@ -25,19 +25,19 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       </div>
       <div className="flex flex-1 flex-col gap-4 p-6">
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="font-display text-xl font-semibold text-slate-900 group-hover:text-brand-600">
+          <div className="flex-1">
+            <h3 className="line-clamp-2 font-display text-xl font-semibold text-slate-900 group-hover:text-brand-600">
               {property.title}
             </h3>
             <p className="text-xs uppercase tracking-wide text-slate-400">
               {property.propertyType}
             </p>
           </div>
-          <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold uppercase text-brand-600">
+          <span className="shrink-0 rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold uppercase text-brand-600">
             {property.status}
           </span>
         </div>
-        <p className="text-sm text-slate-600">{property.description}</p>
+        <p className="line-clamp-3 text-sm text-slate-600">{property.description}</p>
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
           <span>
             {property.address.city}, {property.address.state}
@@ -47,7 +47,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         {property.features.length > 0 && (
           <ul className="flex flex-wrap gap-2 text-xs text-slate-500">
             {property.features.slice(0, 4).map((feature) => (
-              <li key={feature} className="rounded-full bg-slate-100 px-3 py-1">
+              <li key={feature} className="truncate rounded-full bg-slate-100 px-3 py-1">
                 {feature}
               </li>
             ))}

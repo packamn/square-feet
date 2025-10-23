@@ -63,16 +63,24 @@ router.post('/', async (req, res, next) => {
       propertyId: body.propertyId ?? randomUUID(),
       createdAt: now,
       updatedAt: now,
-      status: body.status ?? 'draft',
-      sellerId: body.sellerId ?? randomUUID(),
+      status: body.status ?? 'pending',
+      sellerId: body.sellerId ?? 'SELLER_DEMO_001',
       features: body.features ?? [],
       images: body.images ?? [],
     }
 
     await createProperty(property)
-    logger.info('Created property', property.propertyId)
+    logger.info('Created property', {
+      propertyId: property.propertyId,
+      title: property.title,
+      sellerId: property.sellerId,
+      status: property.status,
+      price: property.price,
+      location: `${property.address.city}, ${property.address.state}`
+    })
     res.status(201).json(property)
   } catch (error) {
+    logger.error('Failed to create property', error)
     next(error)
   }
 })

@@ -1,8 +1,7 @@
 import type { PropertyFilters } from '../../hooks/useProperties'
-import { CheckCircleIcon, ClockIcon, PencilSquareIcon } from '@heroicons/react/24/solid'
+import { CheckCircleIcon, ClockIcon } from '@heroicons/react/24/solid'
 
 const statusOptions = [
-  { label: 'Drafts', value: 'draft', icon: PencilSquareIcon },
   { label: 'Pending', value: 'pending', icon: ClockIcon },
   { label: 'Approved', value: 'approved', icon: CheckCircleIcon },
 ]
