@@ -45,7 +45,16 @@ const AdminPanel = () => {
   const handleBulkApprove = async () => {
     if (selectedIds.length === 0) return
 
-    const confirmed = window.confirm(`Approve ${selectedIds.length} properties?`)
+    // Filter out already-approved properties
+    const selectedProperties = data.filter((p) => selectedIds.includes(p.propertyId))
+    const approvableProperties = selectedProperties.filter((p) => p.status !== 'approved')
+
+    if (approvableProperties.length === 0) {
+      toast.error('Selected properties are already approved')
+      return
+    }
+
+    const confirmed = window.confirm(`Approve ${approvableProperties.length} properties?`)
     if (!confirmed) return
 
     setIsBulkProcessing(true)
@@ -53,15 +62,15 @@ const AdminPanel = () => {
     let successCount = 0
     let failCount = 0
 
-    for (const propertyId of selectedIds) {
+    for (const property of approvableProperties) {
       try {
-        await apiFetch(`/properties/${propertyId}`, {
+        await apiFetch(`/properties/${property.propertyId}`, {
           method: 'PUT',
           body: JSON.stringify({ status: 'approved' }),
         })
         successCount++
       } catch (error) {
-        console.error(`Failed to approve ${propertyId}:`, error)
+        console.error(`Failed to approve ${property.propertyId}:`, error)
         failCount++
       }
     }
@@ -81,8 +90,17 @@ const AdminPanel = () => {
   const handleBulkReject = async () => {
     if (selectedIds.length === 0) return
 
+    // Filter out already-rejected properties
+    const selectedProperties = data.filter((p) => selectedIds.includes(p.propertyId))
+    const rejectableProperties = selectedProperties.filter((p) => p.status !== 'rejected')
+
+    if (rejectableProperties.length === 0) {
+      toast.error('Selected properties are already rejected')
+      return
+    }
+
     const reason = window.prompt(
-      `Provide rejection reason for ${selectedIds.length} properties (optional):`
+      `Provide rejection reason for ${rejectableProperties.length} properties (optional):`
     )
 
     if (reason === null) return
@@ -92,9 +110,9 @@ const AdminPanel = () => {
     let successCount = 0
     let failCount = 0
 
-    for (const propertyId of selectedIds) {
+    for (const property of rejectableProperties) {
       try {
-        await apiFetch(`/properties/${propertyId}`, {
+        await apiFetch(`/properties/${property.propertyId}`, {
           method: 'PUT',
           body: JSON.stringify({
             status: 'rejected',
@@ -103,7 +121,7 @@ const AdminPanel = () => {
         })
         successCount++
       } catch (error) {
-        console.error(`Failed to reject ${propertyId}:`, error)
+        console.error(`Failed to reject ${property.propertyId}:`, error)
         failCount++
       }
     }

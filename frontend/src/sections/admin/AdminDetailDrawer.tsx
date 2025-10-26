@@ -137,6 +137,7 @@ export const AdminDetailDrawer = ({ property, onClose, onRefresh }: AdminDetailD
                         <p>{property.description}</p>
                       </div>
 
+                      {/* Action buttons based on current status */}
                       {property.status === 'pending' && (
                         <div className="flex gap-2 pt-2">
                           <button
@@ -152,6 +153,30 @@ export const AdminDetailDrawer = ({ property, onClose, onRefresh }: AdminDetailD
                             className="flex-1 rounded-full border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-red-500 hover:text-red-600 disabled:cursor-not-allowed disabled:text-slate-400"
                           >
                             Reject
+                          </button>
+                        </div>
+                      )}
+
+                      {property.status === 'rejected' && (
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={handleApprove}
+                            disabled={isApproving}
+                            className="flex-1 rounded-full bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-brand-300"
+                          >
+                            {isApproving ? 'Approving...' : 'Reconsider & Approve'}
+                          </button>
+                        </div>
+                      )}
+
+                      {property.status === 'approved' && (
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={handleRejectClick}
+                            disabled={isRejecting}
+                            className="flex-1 rounded-full border border-red-200 px-4 py-2.5 text-sm font-semibold text-red-600 transition hover:border-red-500 hover:bg-red-50 disabled:cursor-not-allowed disabled:text-slate-400"
+                          >
+                            Revoke Approval
                           </button>
                         </div>
                       )}
