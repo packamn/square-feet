@@ -134,6 +134,41 @@ export const updateProperty = async (
     return next;
   }
 
+  // Build dynamic update expression based on defined fields
+  const updateParts: string[] = [];
+  const expressionAttributeNames: Record<string, string> = {};
+  const expressionAttributeValues: Record<string, any> = {};
+
+  // Always update these core fields
+  const fieldsToUpdate: Record<string, any> = {
+    title: next.title,
+    description: next.description,
+    price: next.price,
+    currency: next.currency,
+    address: next.address,
+    propertyType: next.propertyType,
+    features: next.features,
+    images: next.images,
+    sellerId: next.sellerId,
+    updatedAt: next.updatedAt,
+  };
+
+  // Add optional fields only if they have values
+  if (next.bedrooms !== undefined) fieldsToUpdate.bedrooms = next.bedrooms;
+  if (next.bathrooms !== undefined) fieldsToUpdate.bathrooms = next.bathrooms;
+  if (next.squareFootage !== undefined) fieldsToUpdate.squareFootage = next.squareFootage;
+  if (next.lotSize !== undefined) fieldsToUpdate.lotSize = next.lotSize;
+  if (next.yearBuilt !== undefined) fieldsToUpdate.yearBuilt = next.yearBuilt;
+  if (next.approvedAt !== undefined) fieldsToUpdate.approvedAt = next.approvedAt;
+  if (next.rejectedAt !== undefined) fieldsToUpdate.rejectedAt = next.rejectedAt;
+  if (next.rejectionReason !== undefined) fieldsToUpdate.rejectionReason = next.rejectionReason;
+
+  Object.entries(fieldsToUpdate).forEach(([key, value]) => {
+    updateParts.push(`#${key} = :${key}`);
+    expressionAttributeNames[`#${key}`] = key;
+    expressionAttributeValues[`:${key}`] = value;
+  });
+
   await documentClient.send(
     new UpdateCommand({
       TableName: TABLE_NAME,
@@ -141,42 +176,9 @@ export const updateProperty = async (
         propertyId: existing.propertyId,
         status: existing.status,
       },
-      UpdateExpression:
-        "set #title = :title, #description = :description, #price = :price, #currency = :currency, #address = :address, #propertyType = :propertyType, #bedrooms = :bedrooms, #bathrooms = :bathrooms, #squareFootage = :squareFootage, #lotSize = :lotSize, #yearBuilt = :yearBuilt, #features = :features, #images = :images, #sellerId = :sellerId, #updatedAt = :updatedAt",
-      ExpressionAttributeNames: {
-        "#title": "title",
-        "#description": "description",
-        "#price": "price",
-        "#currency": "currency",
-        "#address": "address",
-        "#propertyType": "propertyType",
-        "#bedrooms": "bedrooms",
-        "#bathrooms": "bathrooms",
-        "#squareFootage": "squareFootage",
-        "#lotSize": "lotSize",
-        "#yearBuilt": "yearBuilt",
-        "#features": "features",
-        "#images": "images",
-        "#sellerId": "sellerId",
-        "#updatedAt": "updatedAt",
-      },
-      ExpressionAttributeValues: {
-        ":title": next.title,
-        ":description": next.description,
-        ":price": next.price,
-        ":currency": next.currency,
-        ":address": next.address,
-        ":propertyType": next.propertyType,
-        ":bedrooms": next.bedrooms,
-        ":bathrooms": next.bathrooms,
-        ":squareFootage": next.squareFootage,
-        ":lotSize": next.lotSize,
-        ":yearBuilt": next.yearBuilt,
-        ":features": next.features,
-        ":images": next.images,
-        ":sellerId": next.sellerId,
-        ":updatedAt": next.updatedAt,
-      },
+      UpdateExpression: `set ${updateParts.join(', ')}`,
+      ExpressionAttributeNames: expressionAttributeNames,
+      ExpressionAttributeValues: expressionAttributeValues,
     }),
   );
 

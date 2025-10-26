@@ -45,22 +45,26 @@ const SellerDashboard = () => {
     setIsSaving(true)
 
     try {
-      await apiFetch<Property>('/properties', {
-        method: 'POST',
+      const isEditing = selectedProperty !== null
+      const endpoint = isEditing ? `/properties/${selectedProperty.propertyId}` : '/properties'
+      const method = isEditing ? 'PUT' : 'POST'
+
+      await apiFetch<Property>(endpoint, {
+        method,
         body: JSON.stringify({
           ...values,
           currency: 'INR',
         }),
       })
 
-      toast.success('Property listing created! Pending admin approval.')
+      toast.success(isEditing ? 'Property updated successfully!' : 'Property listing created! Pending admin approval.')
       setModalOpen(false)
       
-      // Refresh the property list to show new listing
+      // Refresh the property list
       refetch()
     } catch (error) {
-      console.error('Failed to create property:', error)
-      toast.error('Failed to create property. Please check all fields and try again.')
+      console.error('Failed to save property:', error)
+      toast.error('Failed to save property. Please check all fields and try again.')
     } finally {
       setIsSaving(false)
     }
