@@ -15,7 +15,7 @@ import { TableRowSkeleton } from '../components/Skeletons'
 import { apiFetch } from '../utils/api'
 
 const defaultFilters: PropertyFilters = {
-  status: 'pending,approved,draft,rejected',
+  status: 'pending,approved,rejected',
 }
 
 const AdminPanel = () => {
