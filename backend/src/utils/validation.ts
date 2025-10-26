@@ -24,4 +24,8 @@ export const propertySchema = z.object({
   status: z.enum(['draft', 'pending', 'approved', 'rejected', 'sold', 'expired']).optional(),
   sellerId: z.string().optional(),
   rejectionReason: z.string().optional(),
+  approvedAt: z.string().optional(),
+  rejectedAt: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 })
