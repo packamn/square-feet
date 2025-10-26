@@ -3,7 +3,7 @@ const team = [
     name: 'Yadavally Venkateshwarlu',
     role: 'Managing Director',
     bio: 'Former Deputy Engineer of over 30 years of experience working for the Irrigation Department of the government of Telangana (erstwhile United AP) turned to private construction since 2014. Leads our Construction Division along with Site inspections and Flood Management.',
-    avatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80',
+    avatar: '/images/team/venkateshwarlu.jpeg',
   },
   {
     name: 'Manthrala Jyothi',
@@ -15,7 +15,7 @@ const team = [
     name: 'Yadavally Mourya',
     role: 'Sales',
     bio: 'Data Analyst & IT Consulting Business Operator. Leads our NRI Sales Division.',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
+    avatar: '/images/team/mourya.jpeg',
   },
 ]
 

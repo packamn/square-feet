@@ -31,4 +31,5 @@ export interface Property {
   updatedAt: string
   approvedAt?: string
   rejectedAt?: string
+  rejectionReason?: string
 }

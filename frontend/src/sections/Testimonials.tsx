@@ -7,7 +7,7 @@ const testimonials = [
       'Venkateshwarlu uncle is very knowledgeable, friendly and cared about our specific needs. Uncle and his team have helped us with the construction of our family home in Nagole, Hyderabad and also the purchase of another residential plot for investment. I highly recommend their services.',
     name: 'Karunakar Vanguru',
     role: 'IT Professional – Raleigh, NC',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    avatar: '/images/testimonials/karunakar.jpg',
   },
   {
     quote:
