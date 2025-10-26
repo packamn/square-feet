@@ -1,7 +1,7 @@
 import type { PropertyFilters } from '../../hooks/useProperties'
 
 const propertyTypeOptions = ['house', 'apartment', 'condo', 'land', 'commercial'] as const
-const statusOptions = ['pending', 'approved', 'rejected', 'sold', 'expired'] as const
+const statusOptions = ['pending', 'approved', 'rejected', 'sold'] as const
 
 export type AdminFiltersProps = {
   filters: PropertyFilters

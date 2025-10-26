@@ -15,7 +15,7 @@ import { TableRowSkeleton } from '../components/Skeletons'
 import { apiFetch } from '../utils/api'
 
 const defaultFilters: PropertyFilters = {
-  status: 'pending,approved,rejected',
+  status: 'pending,approved,rejected,sold',
 }
 
 const AdminPanel = () => {
@@ -138,9 +138,41 @@ const AdminPanel = () => {
     refetch()
   }
 
-  const handleBulkDelete = () => {
-    console.log('[TODO] Delete functionality not implemented yet')
-    toast.error('Delete functionality coming soon')
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return
+
+    const confirmed = window.confirm(
+      `⚠️ Permanently delete ${selectedIds.length} properties? This cannot be undone.`
+    )
+    if (!confirmed) return
+
+    setIsBulkProcessing(true)
+
+    let successCount = 0
+    let failCount = 0
+
+    for (const propertyId of selectedIds) {
+      try {
+        await apiFetch(`/properties/${propertyId}`, {
+          method: 'DELETE',
+        })
+        successCount++
+      } catch (error) {
+        console.error(`Failed to delete ${propertyId}:`, error)
+        failCount++
+      }
+    }
+
+    setIsBulkProcessing(false)
+
+    if (failCount === 0) {
+      toast.success(`Successfully deleted ${successCount} properties.`)
+    } else {
+      toast.error(`Deleted ${successCount}, failed ${failCount}`)
+    }
+
+    setSelectedIds([])
+    refetch()
   }
 
   return (

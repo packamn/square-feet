@@ -28,6 +28,7 @@ type AdminDetailDrawerProps = {
 export const AdminDetailDrawer = ({ property, onClose, onRefresh }: AdminDetailDrawerProps) => {
   const [isApproving, setIsApproving] = useState(false)
   const [isRejecting, setIsRejecting] = useState(false)
+  const [isMarking, setIsMarking] = useState(false)
   const [showRejectModal, setShowRejectModal] = useState(false)
   const [rejectionReason, setRejectionReason] = useState('')
 
@@ -87,6 +88,34 @@ export const AdminDetailDrawer = ({ property, onClose, onRefresh }: AdminDetailD
       toast.error('Failed to reject property. Please try again.')
     } finally {
       setIsRejecting(false)
+    }
+  }
+
+  const handleMarkSold = async () => {
+    if (!property) return
+
+    const confirmed = window.confirm(`Mark ${property.title} as SOLD?`)
+    if (!confirmed) return
+
+    setIsMarking(true)
+
+    try {
+      await apiFetch(`/properties/${property.propertyId}`, {
+        method: 'PUT',
+        body: JSON.stringify({ status: 'sold' }),
+      })
+
+      toast.success(`${property.title} marked as sold.`)
+      onClose()
+
+      if (onRefresh) {
+        onRefresh()
+      }
+    } catch (error) {
+      console.error('Failed to mark as sold:', error)
+      toast.error('Failed to mark as sold. Please try again.')
+    } finally {
+      setIsMarking(false)
     }
   }
 
@@ -171,6 +200,13 @@ export const AdminDetailDrawer = ({ property, onClose, onRefresh }: AdminDetailD
 
                       {property.status === 'approved' && (
                         <div className="flex gap-2 pt-2">
+                          <button
+                            onClick={handleMarkSold}
+                            disabled={isMarking}
+                            className="flex-1 rounded-full bg-green-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-green-600 disabled:cursor-not-allowed disabled:bg-green-300"
+                          >
+                            {isMarking ? 'Marking...' : 'Mark as Sold'}
+                          </button>
                           <button
                             onClick={handleRejectClick}
                             disabled={isRejecting}
