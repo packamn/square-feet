@@ -92,14 +92,29 @@ router.put('/:id', async (req, res, next) => {
       return next(new ApiError(400, parseResult.error.message))
     }
 
-    const updated = await updateProperty(req.params.id, parseResult.data)
+    const updates = parseResult.data
+
+    // Set timestamps based on status change
+    if (updates.status === 'approved') {
+      updates.approvedAt = new Date().toISOString()
+    } else if (updates.status === 'rejected') {
+      updates.rejectedAt = new Date().toISOString()
+    }
+
+    const updated = await updateProperty(req.params.id, updates)
     if (!updated) {
       return next(new ApiError(404, 'Property not found'))
     }
 
-    logger.info('Updated property', req.params.id)
+    logger.info('Updated property', {
+      propertyId: req.params.id,
+      status: updates.status,
+      changes: Object.keys(updates),
+    })
+
     return res.json(updated)
   } catch (error) {
+    logger.error('Failed to update property', error)
     return next(error)
   }
 })

@@ -23,4 +23,5 @@ export const propertySchema = z.object({
   images: z.array(z.string()).default([]),
   status: z.enum(['draft', 'pending', 'approved', 'rejected', 'sold', 'expired']).optional(),
   sellerId: z.string().optional(),
+  rejectionReason: z.string().optional(),
 })
