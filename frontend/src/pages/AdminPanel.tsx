@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import toast from 'react-hot-toast'
 
 import PropertyCard from '../components/PropertyCard'
 import { useProperties } from '../hooks/useProperties'
@@ -11,6 +12,7 @@ import { AdminBulkActions } from '../sections/admin/AdminBulkActions'
 import { AdminDetailDrawer } from '../sections/admin/AdminDetailDrawer'
 import { usePageMetadata } from '../hooks/usePageMetadata'
 import { TableRowSkeleton } from '../components/Skeletons'
+import { apiFetch } from '../utils/api'
 
 const defaultFilters: PropertyFilters = {
   status: 'pending,approved,draft,rejected',
@@ -24,8 +26,9 @@ const AdminPanel = () => {
   const [filters, setFilters] = useState<PropertyFilters>(defaultFilters)
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [detailProperty, setDetailProperty] = useState<Property | null>(null)
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false)
 
-  const { data, status, error } = useProperties(filters)
+  const { data, status, error, refetch } = useProperties(filters)
 
   const toggleSelection = (propertyId: string) => {
     setSelectedIds((prev) =>
@@ -39,9 +42,87 @@ const AdminPanel = () => {
     return `${total} listings · ${pending} awaiting approval`
   }, [data])
 
-  const runBulkAction = (action: string) => {
-    console.log(`[Mock admin action] ${action} on`, selectedIds)
+  const handleBulkApprove = async () => {
+    if (selectedIds.length === 0) return
+
+    const confirmed = window.confirm(`Approve ${selectedIds.length} properties?`)
+    if (!confirmed) return
+
+    setIsBulkProcessing(true)
+
+    let successCount = 0
+    let failCount = 0
+
+    for (const propertyId of selectedIds) {
+      try {
+        await apiFetch(`/properties/${propertyId}`, {
+          method: 'PUT',
+          body: JSON.stringify({ status: 'approved' }),
+        })
+        successCount++
+      } catch (error) {
+        console.error(`Failed to approve ${propertyId}:`, error)
+        failCount++
+      }
+    }
+
+    setIsBulkProcessing(false)
+
+    if (failCount === 0) {
+      toast.success(`Successfully approved ${successCount} properties!`)
+    } else {
+      toast.error(`Approved ${successCount}, failed ${failCount}`)
+    }
+
     setSelectedIds([])
+    refetch()
+  }
+
+  const handleBulkReject = async () => {
+    if (selectedIds.length === 0) return
+
+    const reason = window.prompt(
+      `Provide rejection reason for ${selectedIds.length} properties (optional):`
+    )
+
+    if (reason === null) return
+
+    setIsBulkProcessing(true)
+
+    let successCount = 0
+    let failCount = 0
+
+    for (const propertyId of selectedIds) {
+      try {
+        await apiFetch(`/properties/${propertyId}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            status: 'rejected',
+            rejectionReason: reason || 'No reason provided',
+          }),
+        })
+        successCount++
+      } catch (error) {
+        console.error(`Failed to reject ${propertyId}:`, error)
+        failCount++
+      }
+    }
+
+    setIsBulkProcessing(false)
+
+    if (failCount === 0) {
+      toast.success(`Successfully rejected ${successCount} properties.`)
+    } else {
+      toast.error(`Rejected ${successCount}, failed ${failCount}`)
+    }
+
+    setSelectedIds([])
+    refetch()
+  }
+
+  const handleBulkDelete = () => {
+    console.log('[TODO] Delete functionality not implemented yet')
+    toast.error('Delete functionality coming soon')
   }
 
   return (
@@ -63,10 +144,10 @@ const AdminPanel = () => {
 
       <AdminFilters filters={filters} onFiltersChange={setFilters} />
       <AdminBulkActions
-        disabled={selectedIds.length === 0}
-        onApprove={() => runBulkAction('approve')}
-        onReject={() => runBulkAction('reject')}
-        onDelete={() => runBulkAction('delete')}
+        disabled={selectedIds.length === 0 || isBulkProcessing}
+        onApprove={handleBulkApprove}
+        onReject={handleBulkReject}
+        onDelete={handleBulkDelete}
         selectedCount={selectedIds.length}
       />
 
@@ -101,7 +182,7 @@ const AdminPanel = () => {
         </div>
       )}
 
-      <AdminDetailDrawer property={detailProperty} onClose={() => setDetailProperty(null)} />
+      <AdminDetailDrawer property={detailProperty} onClose={() => setDetailProperty(null)} onRefresh={refetch} />
 
       <section className="rounded-3xl bg-white p-6 shadow-card">
         <h2 className="font-display text-xl font-semibold text-slate-900">Recently approved highlights</h2>
