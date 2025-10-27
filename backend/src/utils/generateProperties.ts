@@ -91,7 +91,8 @@ export const generateProperty = (statusOverride?: PropertyStatus): Property => {
     price,
     currency: "INR",
     address: {
-      street: `${randomFrom(["Road", "Street", "Lane", "Avenue", "Boulevard"])} ${Math.floor(Math.random() * 100) + 1}, ${area}`,
+      street: `${randomFrom(["Road", "Street", "Lane", "Avenue", "Boulevard"])} ${Math.floor(Math.random() * 100) + 1}`,
+      locality: area,
       city: "Hyderabad",
       state: "Telangana",
       zipCode: `5000${Math.floor(Math.random() * 90) + 10}`,

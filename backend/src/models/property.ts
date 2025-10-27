@@ -4,6 +4,7 @@ export type PropertyType = 'house' | 'apartment' | 'condo' | 'land' | 'commercia
 
 export interface Address {
   street: string
+  locality: string
   city: string
   state: string
   zipCode: string

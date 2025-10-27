@@ -40,7 +40,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
         <p className="line-clamp-3 text-sm text-slate-600">{property.description}</p>
         <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
           <span>
-            {property.address.city}, {property.address.state}
+            {property.address.locality}, {property.address.city}
           </span>
           <span>{displayPrice}</span>
         </div>

@@ -7,11 +7,14 @@ export const propertySchema = z.object({
   price: z.number().positive(),
   currency: z.string().length(3),
   address: z.object({
-    street: z.string(),
-    city: z.string(),
-    state: z.string(),
-    zipCode: z.string(),
-    country: z.string(),
+    street: z.string().min(5, 'Street address too short'),
+    locality: z.string().min(2, 'Locality is required'),
+    city: z.literal('Hyderabad'),
+    state: z.literal('Telangana'),
+    zipCode: z.string()
+      .regex(/^\d{6}$/, 'Pin code must be 6 digits')
+      .refine((val) => val.startsWith('5'), 'Hyderabad pin codes start with 5'),
+    country: z.literal('India'),
   }),
   propertyType: z.enum(['house', 'apartment', 'condo', 'land', 'commercial']),
   bedrooms: z.number().optional(),
